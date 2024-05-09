@@ -1,15 +1,33 @@
 import React, {useState} from "react";
 
-function Sort() {
+function Sort({queryParams, setQueryParams}) {
     const [open, setOpen] = React.useState(false);
-    const [selected, setSelected] = useState(0);
-    const list = ['popularity', 'price', 'alphabetically']
+    const list = [
+        {name:'popularity', sort: 'rating'},
+        {name:'price', sort: 'price'},
+        {name: 'alphabetically', sort: 'title'}]
 
-    const selectedSortName = list[selected]
-
-    function onClickListItem(index) {
-        setSelected(index);
+    function onClickListItem(listObj) {
+        // setQueryParams(prevParams => {
+        //     return {...prevParams, sort: selectedSortName}
+        // })
+        setQueryParams(prevParams => {
+            let nextSort = {...prevParams.sort};
+            nextSort.sortType = listObj.sort;
+            nextSort.name =  listObj.name;
+            console.log(nextSort)
+            return {...prevParams, sort: nextSort}
+        });
         setOpen(false);
+    }
+
+    function onClickOrderHandle() {
+        setQueryParams(prevParams => {
+            let nextParams = {...prevParams}
+            if (nextParams.order === 'desc') nextParams.order = 'asc'
+            else nextParams.order = 'desc'
+            return nextParams;
+        })
     }
 
     return (
@@ -27,20 +45,23 @@ function Sort() {
                         fill="#2C2C2C"
                     />
                 </svg>
-                <b>Сортировка по:</b>
-                <span onClick={() => setOpen(!open)}>{selectedSortName}</span>
+                <b>Sort by:</b>
+                <span onClick={() => setOpen(!open)}>{queryParams.sort.name}</span>
             </div>
+            <button onClick={() => onClickOrderHandle()} className={'sort__order'}>
+                {queryParams.order === 'desc' ? '↑' : '↓'}
+            </button>
             {
                 open &&
                 <div className="sort__popup">
                     <ul>
                         {
-                            list.map((sortType, index) => (
+                            list.map((obj, index) => (
                                 <li
-                                    key={sortType}
-                                    className={selected === index ? 'active' : ''}
-                                    onClick={() => onClickListItem(index)}
-                                >{sortType}</li>
+                                    key={obj.sort}
+                                    className={queryParams.sort.sortType === obj.sort ? 'active' : ''}
+                                    onClick={() => onClickListItem(obj)}
+                                >{obj.name}</li>
                             ))
                         }
                     </ul>

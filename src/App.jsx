@@ -1,37 +1,32 @@
+import React from "react";
+import {Routes, Route} from "react-router-dom";
+
 import './scss/app.scss'
 import Header from './components/Header.jsx'
-import Sort from "./components/Sort.jsx";
-import PizzaBlock from "./components/PizzaBlock.jsx";
-import React from "react";
+import Home from "./pages/Home.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import Cart from "./pages/Cart.jsx";
+
+export const SearchContext = React.createContext();
 
 function App() {
-    const [items, setItems] = React.useState([]);
+    const [searchValue, setSearchValue] = React.useState('');
 
-    React.useEffect(() => {
-        fetch('https://663b86b2fee6744a6ea1f725.mockapi.io/items#')
-            .then(res => res.json())
-            .then(json => setItems(json))
-    }, [])
+    console.log(searchValue, 'input changed')
+    // const pathname = window.location.pathname;
     return (
         <div className="wrapper">
-            <Header/>
-            <div className="content">
-                <div className="container">
-                    <div className="content__top">
-                        {/*<Categories/>*/}
-                        <Sort/>
-                    </div>
-                    <h2 className="content__title">Все пиццы</h2>
-                    <div className="content__items">
-                        {
-                            items.map(pizza => (
-                                <PizzaBlock {...pizza}
-                                />
-                            ))
-                        }
-                    </div>
+            <SearchContext.Provider value={{ searchValue, setSearchValue}}>
+                <Header/>
+                <div className="content">
+                    {/*{pathname === '/' && <Home/>}*/}
+                    <Routes>
+                        <Route path={'/'} element={<Home/>}/>
+                        <Route path={'/cart'} element={<Cart/>}/>
+                        <Route path={'*'} element={<NotFound/>}/>
+                    </Routes>
                 </div>
-            </div>
+            </SearchContext.Provider>
         </div>
     )
 }
