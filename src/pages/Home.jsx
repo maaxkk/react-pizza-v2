@@ -1,27 +1,23 @@
 import React from 'react';
-import ReactPaginate from "react-paginate";
+import {useDispatch, useSelector} from "react-redux";
+import axios from "axios";
+
 
 import Categories from "../components/Categories.jsx";
 import Sort from "../components/Sort.jsx";
 import PizzaBlock from "../components/PizzaBlock/index.jsx";
 import Skeleton from "../components/PizzaBlock/Skeleton.jsx";
 import Pagination from "../components/Pagination/index.jsx";
-import {SearchContext} from "../App.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import {setCurrentPage} from "../redux/slices/filterSlice.js";
 
 function Home() {
     // const {searchValue} = React.useContext(SearchContext)
     const params = useSelector((state) => state.value)
+
     const dispatch = useDispatch();
 
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    // const [queryParams, setQueryParams] = React.useState({
-    //     sort: {name: 'popularity', sortType: 'rating'},
-    //     category: 0,
-    //     order: 'desc',
-    // });
-    const [currentPage, setCurrentPage] = React.useState(1);
 
     let pizzas = <h1>There is no pizzas 😔</h1>;
     if (items !== 'Not found') {
@@ -37,14 +33,16 @@ function Home() {
 
     React.useEffect(() => {
         setIsLoading(true)
-        fetch(`https://663b86b2fee6744a6ea1f725.mockapi.io/items?page=${currentPage}&limit=4&${fullRequest}`)
-            .then(res => res.json())
-            .then(json => {
-                setItems(json)
+        axios.get(`https://663b86b2fee6744a6ea1f725.mockapi.io/items?page=${params.currentPage}&limit=4&${fullRequest}`)
+            .then(res => {
+                setItems(res.data)
                 setIsLoading(false)
-                window.scrollTo(0, 0)
             })
-    }, [params, currentPage])
+    }, [params])
+
+    function onChangePage(number) {
+        dispatch(setCurrentPage(number))
+    }
 
     return (
         <div className={'container'}>
@@ -58,7 +56,7 @@ function Home() {
                     ? pizzas
                     : skeletons}
             </div>
-            <Pagination onChangePage={number => setCurrentPage(number)}/>
+            <Pagination value={params.currentPage} onChangePage={onChangePage}/>
         </div>
     );
 }

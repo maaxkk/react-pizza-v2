@@ -1,7 +1,5 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
-// import {useSelector, useDispatch} from "react-redux";
-// import {setSearchValue} from "./redux/slices/filterSlice.js";
 
 import './scss/app.scss'
 import Header from './components/Header.jsx'
@@ -12,11 +10,6 @@ import Cart from "./pages/Cart.jsx";
 export const SearchContext = React.createContext();
 
 function App() {
-    // const [searchValue, setSearchValue] = React.useState('');
-
-    // const searchValue = useSelector((state) => state.search.count);
-    // const dispatch = useDispatch();
-
     // const pathname = window.location.pathname;
     return (
         <div className="wrapper">

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setOrder, setSort} from "../redux/slices/filterSlice.js";
 
@@ -14,27 +14,11 @@ function Sort() {
         {name: 'alphabetically', sort: 'title'}]
 
     function onClickListItem(listObj) {
-        // setQueryParams(prevParams => {
-        //     return {...prevParams, sort: selectedSortName}
-        // })
-        // setQueryParams(prevParams => {
-        //     let nextSort = {...prevParams.sort};
-        //     nextSort.sortType = listObj.sort;
-        //     nextSort.name =  listObj.name;
-        //     console.log(nextSort)
-        //     return {...prevParams, sort: nextSort}
-        // });
         dispatch(setSort(listObj))
         setOpen(false);
     }
 
     function onClickOrderHandle() {
-        // setQueryParams(prevParams => {
-        //     let nextParams = {...prevParams}
-        //     if (nextParams.order === 'desc') nextParams.order = 'asc'
-        //     else nextParams.order = 'desc'
-        //     return nextParams;
-        // })
         dispatch(setOrder())
     }
 

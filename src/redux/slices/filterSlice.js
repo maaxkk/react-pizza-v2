@@ -5,9 +5,10 @@ const initialState = {
     category: 0,
     order: 'desc',
     sort: {name: 'popularity', value: 'rating'},
+    currentPage: 1,
 }
 
-export const searchSlice = createSlice({
+export const filterSlice = createSlice({
     name: 'search',
     initialState: initialState,
     reducers: {
@@ -23,14 +24,16 @@ export const searchSlice = createSlice({
         setSort: (state, action) => {
             state.sort.value = action.payload.sort;
             state.sort.name = action.payload.name;
-
+        },
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload;
         }
 
     }
 })
 
-console.log(searchSlice, 'slice')
+console.log(filterSlice, 'slice')
 
-export const {setSearchValue, setCategory, setOrder, setSort} = searchSlice.actions
+export const {setSearchValue, setCategory, setOrder, setSort, setCurrentPage} = filterSlice.actions
 
-export default searchSlice.reducer
+export default filterSlice.reducer

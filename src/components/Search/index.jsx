@@ -1,17 +1,35 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
+import debounce from 'lodash.debounce';
 
 import {setSearchValue} from "../../redux/slices/filterSlice.js";
 import styles from './Search.module.scss';
-// import {SearchContext} from "../../App.jsx";
+
 
 function Search() {
-    // const {searchValue, setSearchValue} = React.useContext(SearchContext)
+    const [value, setValue] = React.useState('');
+
     const searchValue = useSelector((state) => {
         return state.value.search
     })
-    console.log(searchValue)
-    const dispatch = useDispatch()
+
+    const inputRef = useRef();
+
+    function onClickClear() {
+        dispatch(setSearchValue(''))
+        setValue('')
+        inputRef.current.focus();
+    }
+
+    const updateSearchValue = React.useCallback(
+        debounce((str) => { dispatch(setSearchValue(str))}, 250), []);
+
+    const onChangeInput = (event) => {
+        setValue(event.target.value);
+        updateSearchValue(event.target.value)
+    }
+
+    const dispatch = useDispatch();
     return (
         <div className={styles.root}>
             <svg
@@ -47,13 +65,14 @@ function Search() {
                     y2="20.366"
                 />
             </svg>
-            <input value={searchValue}
-                   onChange={(event => dispatch(setSearchValue(event.target.value)))}
+            <input ref={inputRef}
+                   value={value}
+                   onChange={onChangeInput}
                    className={styles.input}
                    placeholder={'Search pizza...'}/>
-            {searchValue &&
+            {value &&
                 <svg
-                    onClick={() => dispatch(setSearchValue(''))}
+                    onClick={() => onClickClear()}
                     className={styles.clearIcon}
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
