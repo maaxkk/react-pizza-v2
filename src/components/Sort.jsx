@@ -1,7 +1,13 @@
 import React, {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {setOrder, setSort} from "../redux/slices/filterSlice.js";
 
-function Sort({queryParams, setQueryParams}) {
+function Sort() {
     const [open, setOpen] = React.useState(false);
+
+    const params = useSelector((state) => state.value)
+    const dispatch = useDispatch()
+
     const list = [
         {name:'popularity', sort: 'rating'},
         {name:'price', sort: 'price'},
@@ -11,23 +17,25 @@ function Sort({queryParams, setQueryParams}) {
         // setQueryParams(prevParams => {
         //     return {...prevParams, sort: selectedSortName}
         // })
-        setQueryParams(prevParams => {
-            let nextSort = {...prevParams.sort};
-            nextSort.sortType = listObj.sort;
-            nextSort.name =  listObj.name;
-            console.log(nextSort)
-            return {...prevParams, sort: nextSort}
-        });
+        // setQueryParams(prevParams => {
+        //     let nextSort = {...prevParams.sort};
+        //     nextSort.sortType = listObj.sort;
+        //     nextSort.name =  listObj.name;
+        //     console.log(nextSort)
+        //     return {...prevParams, sort: nextSort}
+        // });
+        dispatch(setSort(listObj))
         setOpen(false);
     }
 
     function onClickOrderHandle() {
-        setQueryParams(prevParams => {
-            let nextParams = {...prevParams}
-            if (nextParams.order === 'desc') nextParams.order = 'asc'
-            else nextParams.order = 'desc'
-            return nextParams;
-        })
+        // setQueryParams(prevParams => {
+        //     let nextParams = {...prevParams}
+        //     if (nextParams.order === 'desc') nextParams.order = 'asc'
+        //     else nextParams.order = 'desc'
+        //     return nextParams;
+        // })
+        dispatch(setOrder())
     }
 
     return (
@@ -46,10 +54,10 @@ function Sort({queryParams, setQueryParams}) {
                     />
                 </svg>
                 <b>Sort by:</b>
-                <span onClick={() => setOpen(!open)}>{queryParams.sort.name}</span>
+                <span onClick={() => setOpen(!open)}>{params.sort.name}</span>
             </div>
             <button onClick={() => onClickOrderHandle()} className={'sort__order'}>
-                {queryParams.order === 'desc' ? '↑' : '↓'}
+                {params.order === 'desc' ? '↑' : '↓'}
             </button>
             {
                 open &&
@@ -59,7 +67,7 @@ function Sort({queryParams, setQueryParams}) {
                             list.map((obj, index) => (
                                 <li
                                     key={obj.sort}
-                                    className={queryParams.sort.sortType === obj.sort ? 'active' : ''}
+                                    className={params.sort.value === obj.sort ? 'active' : ''}
                                     onClick={() => onClickListItem(obj)}
                                 >{obj.name}</li>
                             ))

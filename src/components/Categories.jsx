@@ -1,13 +1,17 @@
 import React from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {setCategory} from "../redux/slices/filterSlice.js";
 
-function Categories({queryParams ,setQueryParams}) {
+function Categories() {
     const categories = ['All', 'Meat', 'Vegan', 'Grille', 'Spicy', 'Closed']
+    const categoryParam = useSelector((state) => state.value.category)
+    const dispatch = useDispatch();
 
     return (
         <div className="categories">
             <ul>
                 {categories.map((category, index) => (
-                    <li key={index} onClick={() => setQueryParams(index)} className={index === queryParams.category ? 'active' : ''}>{category}</li>
+                    <li key={index} onClick={() => dispatch(setCategory(index))} className={index === categoryParam ? 'active' : ''}>{category}</li>
                 ))}
             </ul>
         </div>

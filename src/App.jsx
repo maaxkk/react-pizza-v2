@@ -1,5 +1,7 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom";
+// import {useSelector, useDispatch} from "react-redux";
+// import {setSearchValue} from "./redux/slices/filterSlice.js";
 
 import './scss/app.scss'
 import Header from './components/Header.jsx'
@@ -10,13 +12,15 @@ import Cart from "./pages/Cart.jsx";
 export const SearchContext = React.createContext();
 
 function App() {
-    const [searchValue, setSearchValue] = React.useState('');
+    // const [searchValue, setSearchValue] = React.useState('');
 
-    console.log(searchValue, 'input changed')
+    // const searchValue = useSelector((state) => state.search.count);
+    // const dispatch = useDispatch();
+
     // const pathname = window.location.pathname;
     return (
         <div className="wrapper">
-            <SearchContext.Provider value={{ searchValue, setSearchValue}}>
+            {/*<SearchContext.Provider value={{ searchValue, setSearchValue}}>*/}
                 <Header/>
                 <div className="content">
                     {/*{pathname === '/' && <Home/>}*/}
@@ -26,7 +30,7 @@ function App() {
                         <Route path={'*'} element={<NotFound/>}/>
                     </Routes>
                 </div>
-            </SearchContext.Provider>
+            {/*</SearchContext.Provider>*/}
         </div>
     )
 }

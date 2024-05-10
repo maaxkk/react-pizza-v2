@@ -7,27 +7,33 @@ import PizzaBlock from "../components/PizzaBlock/index.jsx";
 import Skeleton from "../components/PizzaBlock/Skeleton.jsx";
 import Pagination from "../components/Pagination/index.jsx";
 import {SearchContext} from "../App.jsx";
+import {useDispatch, useSelector} from "react-redux";
 
 function Home() {
-    const {searchValue} = React.useContext(SearchContext)
+    // const {searchValue} = React.useContext(SearchContext)
+    const params = useSelector((state) => state.value)
+    const dispatch = useDispatch();
 
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [queryParams, setQueryParams] = React.useState({
-        sort: {name: 'popularity', sortType: 'rating'},
-        category: 0,
-        order: 'desc',
-    });
+    // const [queryParams, setQueryParams] = React.useState({
+    //     sort: {name: 'popularity', sortType: 'rating'},
+    //     category: 0,
+    //     order: 'desc',
+    // });
     const [currentPage, setCurrentPage] = React.useState(1);
 
-    const pizzas = items.map(pizza => (<PizzaBlock key={pizza.id} {...pizza} />));
+    let pizzas = <h1>There is no pizzas 😔</h1>;
+    if (items !== 'Not found') {
+        pizzas = items.map(pizza => (<PizzaBlock key={pizza.id} {...pizza} />));
+    }
     const skeletons = [...new Array(6)].map((_, index) => (
         <Skeleton key={index}/>
     ))
 
-    const category = queryParams.category > 0 ? `category=${queryParams.category}` : ''
-    const search = searchValue ? `search=${searchValue}` : '';
-    const fullRequest = `${category}&sortBy=${queryParams.sort.sortType}&order=${queryParams.order}&${search}`
+    const categoryParam = params.category > 0 ? `category=${params.category}` : ''
+    const search = params.search ? `search=${params.search}` : '';
+    const fullRequest = `${categoryParam}&sortBy=${params.sort.value}&order=${params.order}&${search}`
 
     React.useEffect(() => {
         setIsLoading(true)
@@ -38,14 +44,13 @@ function Home() {
                 setIsLoading(false)
                 window.scrollTo(0, 0)
             })
-    }, [queryParams, searchValue, currentPage])
+    }, [params, currentPage])
 
     return (
         <div className={'container'}>
             <div className="content__top">
-                <Categories queryParams={queryParams} setQueryParams={(index) =>
-                    setQueryParams(prevParams => ({...prevParams, category: index}))}/>
-                <Sort queryParams={queryParams} setQueryParams={setQueryParams}/>
+                <Categories/>
+                <Sort/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
