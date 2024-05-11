@@ -1,18 +1,21 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
+import qs from 'qs';
 
 
 import Categories from "../components/Categories.jsx";
-import Sort from "../components/Sort.jsx";
+import Sort, {list} from "../components/Sort.jsx";
 import PizzaBlock from "../components/PizzaBlock/index.jsx";
 import Skeleton from "../components/PizzaBlock/Skeleton.jsx";
 import Pagination from "../components/Pagination/index.jsx";
-import {setCurrentPage} from "../redux/slices/filterSlice.js";
+import {setCurrentPage, setFilters} from "../redux/slices/filterSlice.js";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 function Home() {
     // const {searchValue} = React.useContext(SearchContext)
     const params = useSelector((state) => state.value)
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -32,12 +35,37 @@ function Home() {
     const fullRequest = `${categoryParam}&sortBy=${params.sort.value}&order=${params.order}&${search}`
 
     React.useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1))
+            const sortObj = list.find(obj => obj.value === params.sort)
+            console.log(sortObj)
+            dispatch(setFilters({
+                currentPage: params.currentPage,
+                order: params.order,
+                category: params.category,
+                sort: sortObj,
+            }))
+        }
+    }, [])
+
+    React.useEffect(() => {
         setIsLoading(true)
         axios.get(`https://663b86b2fee6744a6ea1f725.mockapi.io/items?page=${params.currentPage}&limit=4&${fullRequest}`)
             .then(res => {
                 setItems(res.data)
                 setIsLoading(false)
             })
+
+    }, [params])
+
+    React.useEffect(() => {
+       const queryString = qs.stringify({
+           sort: params.sort.value,
+           category: params.category,
+           currentPage: params.currentPage,
+           order: params.order,
+       });
+        navigate(`?${queryString}`)
     }, [params])
 
     function onChangePage(number) {

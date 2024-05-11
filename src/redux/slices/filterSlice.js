@@ -22,18 +22,25 @@ export const filterSlice = createSlice({
             state.order = state.order === 'desc' ? 'asc' : 'desc'
         },
         setSort: (state, action) => {
-            state.sort.value = action.payload.sort;
+            state.sort.value = action.payload.value;
             state.sort.name = action.payload.name;
         },
         setCurrentPage: (state, action) => {
             state.currentPage = action.payload;
+        },
+        setFilters(state, action) {
+            console.log(action.payload)
+            // state.sort = action.payload.sort;
+            state.currentPage = Number(action.payload.currentPage);
+            state.category = Number(action.payload.category);
+            state.order = action.payload.order;
         }
 
     }
 })
 
-console.log(filterSlice, 'slice')
+// console.log(filterSlice, 'slice')
 
-export const {setSearchValue, setCategory, setOrder, setSort, setCurrentPage} = filterSlice.actions
+export const {setFilters, setSearchValue, setCategory, setOrder, setSort, setCurrentPage} = filterSlice.actions
 
 export default filterSlice.reducer
