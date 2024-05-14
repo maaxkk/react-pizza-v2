@@ -4,7 +4,7 @@ import {setCategory} from "../redux/slices/filterSlice.js";
 
 function Categories() {
     const categories = ['All', 'Meat', 'Vegan', 'Grille', 'Spicy', 'Closed']
-    const categoryParam = useSelector((state) => state.value.category)
+    const categoryParam = useSelector((state) => state.filter.category)
     const dispatch = useDispatch();
 
     return (

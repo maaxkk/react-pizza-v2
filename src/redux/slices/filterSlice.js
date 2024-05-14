@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const initialState = {
+export const initialState = {
     search: '',
     category: 0,
     order: 'desc',

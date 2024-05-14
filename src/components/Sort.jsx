@@ -9,8 +9,9 @@ export const list = [
 
 function Sort() {
     const [open, setOpen] = React.useState(false);
+    const sortRef = React.useRef();
 
-    const params = useSelector((state) => state.value)
+    const params = useSelector((state) => state.filter)
     const dispatch = useDispatch()
 
     function onClickListItem(listObj) {
@@ -18,12 +19,24 @@ function Sort() {
         setOpen(false);
     }
 
+    React.useEffect(() => {
+        function handleClickEvent(event) {
+            if (!event.composedPath().includes(sortRef.current)) {
+                setOpen(false);
+                console.log('click outside')
+            }
+        }
+        document.body.addEventListener('click', handleClickEvent);
+
+        return () => document.body.removeEventListener('click', handleClickEvent)
+    }, [])
+
     function onClickOrderHandle() {
         dispatch(setOrder())
     }
 
     return (
-        <div className="sort">
+        <div ref={sortRef} className="sort">
             <div className="sort__label">
                 <svg
                     width="10"
