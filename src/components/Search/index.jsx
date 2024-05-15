@@ -10,7 +10,7 @@ function Search() {
     const [value, setValue] = React.useState('');
 
     const searchValue = useSelector((state) => {
-        return state.filter.search
+         state.filter.search
     })
 
     const inputRef = useRef();
