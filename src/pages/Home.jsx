@@ -4,7 +4,7 @@ import qs from 'qs';
 
 
 import Categories from "../components/Categories.jsx";
-import Sort, {list} from "../components/Sort.jsx";
+import Sort, {list} from "../components/Sort.tsx";
 import PizzaBlock from "../components/PizzaBlock/index.jsx";
 import Skeleton from "../components/PizzaBlock/Skeleton.jsx";
 import Pagination from "../components/Pagination/index.jsx";

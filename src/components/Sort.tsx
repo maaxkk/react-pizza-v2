@@ -2,7 +2,14 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setOrder, setSort} from "../redux/slices/filterSlice.js";
 
-export const list = [
+type SortItem = {
+    name: string;
+    value: string;
+};
+
+export const list: {
+    name: string,
+} = [
     {name:'popularity', value: 'rating'},
     {name:'price', value: 'price'},
     {name: 'alphabetically', value: 'title'}]

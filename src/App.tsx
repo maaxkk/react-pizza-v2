@@ -5,10 +5,8 @@ import './scss/app.scss'
 import Home from "./pages/Home.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Cart from "./pages/Cart.jsx";
-import FullPizza from "./pages/FullPizza.jsx";
+import FullPizza from "./pages/FullPizza.js";
 import MainLayout from "./layout/MainLayout.jsx";
-
-export const SearchContext = React.createContext();
 
 function App() {
     return (

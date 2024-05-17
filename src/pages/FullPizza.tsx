@@ -5,7 +5,11 @@ import axios from "axios";
 function FullPizza() {
     const {id} = useParams();
     const navigate = useNavigate();
-    const [pizza, setPizza] = useState();
+    const [pizza, setPizza] = useState<{
+        imageUrl: string;
+        title: string;
+        price: number;
+    }>();
 
     useEffect( () => {
         async function fetchPizza() {
@@ -27,7 +31,7 @@ function FullPizza() {
 
     return (
         <div>
-            <img src={pizza.imageUrl}/>
+            <img src={pizza.imageUrl} alt={'Image of chosen pizza'}/>
             <h2>{pizza.title}</h2>
             <h3>{pizza.price} ₽</h3>
 
